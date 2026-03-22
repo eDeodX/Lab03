@@ -64,4 +64,98 @@ root@debian:~/eDeodX/workspace/tasks/HM3/formatter_lib# cmake --build _build
 
 # Задание 2
 
-##
+## У компании "Formatter Inc." есть перспективная бибиотека которая является расширением предыдущей библиотеки. Т.к. вы уже овладели навыком создания CMakeLists.txt для статической библиотеки formatter, ваш руководитель поручает заняться созданием CMakeLists.txt для библиотеки formatter_ex, которая в свою очередь использует библиотеку formatter
+
+Аналогично 1 заданию создаем исходные файлы:
+
+<pre>root@debian:~/eDeodX/workspace/tasks/HM3# mkdir formatter_ex_lib
+root@debian:~/eDeodX/workspace/tasks/HM3# cd formatter_ex_lib/
+root@debian:~/eDeodX/workspace/tasks/HM3/formatter_ex_lib# mkdir include
+root@debian:~/eDeodX/workspace/tasks/HM3/formatter_ex_lib# cd include
+root@debian:~/eDeodX/workspace/tasks/HM3/formatter_ex_lib/include# touch formatter_ex.h
+root@debian:~/eDeodX/workspace/tasks/HM3/formatter_ex_lib/include# subl formatter_ex.h 
+root@debian:~/eDeodX/workspace/tasks/HM3/formatter_ex_lib/include# cd ..
+root@debian:~/eDeodX/workspace/tasks/HM3/formatter_ex_lib# mkdir sources
+root@debian:~/eDeodX/workspace/tasks/HM3/formatter_ex_lib# cd sources
+root@debian:~/eDeodX/workspace/tasks/HM3/formatter_ex_lib/sources# touch formatter_ex.cpp
+root@debian:~/eDeodX/workspace/tasks/HM3/formatter_ex_lib/sources# subl formatter_ex.cpp
+</pre>
+
+CMakeLists.txt в formatter_ex:
+
+<pre>cmake_minimum_required(VERSION 3.10)
+project(formatter_ex)
+
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+add_library(formatter_ex STATIC sources/formatter_ex.cpp)
+target_include_directories(formatter_ex PUBLIC include
+  ~/eDeodX/workspace/tasks/HM3/formatter_lib/include
+)
+
+target_link_libraries(formatter_ex PUBLIC formatter) </pre>
+
+CMakeLists.txt в корневой папке HM3:
+
+<pre>cmake_minimum_required(VERSION 3.10)
+project(HM3)
+
+add_subdirectory(formatter_lib)
+add_subdirectory(formatter_ex_lib)</pre>
+
+Билд:
+
+<pre>root@debian:~/eDeodX/workspace/tasks/HM3# cmake -H. -B_build
+-- The C compiler identification is GNU 14.2.0
+-- The CXX compiler identification is GNU 14.2.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done (0.4s)
+-- Generating done (0.0s)
+-- Build files have been written to: /root/eDeodX/workspace/tasks/HM3/_build
+root@debian:~/eDeodX/workspace/tasks/HM3# cmake --build _build
+[ 25%] <font color="#00AA00">Building CXX object formatter_lib/CMakeFiles/formatter.dir/sources/formatter.cpp.o</font>
+[ 50%] <font color="#55FF55"><b>Linking CXX static library libformatter.a</b></font>
+[ 50%] Built target formatter
+[ 75%] <font color="#00AA00">Building CXX object formatter_ex_lib/CMakeFiles/formatter_ex.dir/sources/formatter_ex.cpp.o</font>
+[100%] <font color="#55FF55"><b>Linking CXX static library libformatter_ex.a</b></font>
+[100%] Built target formatter_ex
+root@debian:~/eDeodX/workspace/tasks/HM3# subl REPORT.md 
+</pre>
+
+# Задание 3
+
+## Конечно же ваша компания предоставляет примеры использования своих библиотек. Чтобы продемонстрировать как работать с библиотекой formatter_ex, вам необходимо создать два CMakeList.txt для двух простых приложений:
+
+## hello_world, которое использует библиотеку formatter_ex
+## solver, приложение которое использует статические библиотеки formatter_ex и solver_lib
+
+Создаем исходный файлы для библиотеки solver_lib:
+
+<pre>root@debian:~/eDeodX/workspace/tasks/HM3# mkdir examples
+root@debian:~/eDeodX/workspace/tasks/HM3# cd examples
+root@debian:~/eDeodX/workspace/tasks/HM3/examples# touch hello_world.cpp
+root@debian:~/eDeodX/workspace/tasks/HM3/examples# subl hello_world.cpp
+root@debian:~/eDeodX/workspace/tasks/HM3/examples# cd ..
+root@debian:~/eDeodX/workspace/tasks/HM3# mkdir solver_lib
+root@debian:~/eDeodX/workspace/tasks/HM3# cd solver_lib/
+root@debian:~/eDeodX/workspace/tasks/HM3/solver_lib# mkdir include
+root@debian:~/eDeodX/workspace/tasks/HM3/solver_lib# cd include
+root@debian:~/eDeodX/workspace/tasks/HM3/solver_lib/include# touch solver.h
+root@debian:~/eDeodX/workspace/tasks/HM3/solver_lib/include# subl solver.h 
+root@debian:~/eDeodX/workspace/tasks/HM3/solver_lib/include# cd ..
+root@debian:~/eDeodX/workspace/tasks/HM3/solver_lib# mkdir sources
+root@debian:~/eDeodX/workspace/tasks/HM3/solver_lib# cd sources/
+root@debian:~/eDeodX/workspace/tasks/HM3/solver_lib/sources# touch solver.cpp
+root@debian:~/eDeodX/workspace/tasks/HM3/solver_lib/sources# subl solver.cpp 
+root@debian:~/eDeodX/workspace/tasks/HM3/solver_lib/sources# subl solver.cpp
+</pre>
